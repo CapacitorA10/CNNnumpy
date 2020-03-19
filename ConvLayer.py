@@ -53,3 +53,4 @@ class ConvLayer :
 
         self.h_b += self.grad_b * self.grad_b
         self.b -= eta / np.sqrt(self.h_b) * self.grad_b
+
