@@ -7,7 +7,7 @@ class BaseLayer:
     def __init__(self, n_upper, n):
         self.w = 0.1*np.random.randn(n_upper, n)
         self.b = 0.1*np.random.randn(n)
-
+        #adagrad
         self.h_w = np.zeros((n_upper, n)) + 1e-8
         self.h_b = np.zeros(n) + 1e-8
 
@@ -17,6 +17,7 @@ class BaseLayer:
 
         self.h_b += self.grad_b * self.grad_b
         self.b -= eta / np.sqrt(self.h_b) * self.grad_b
+
 
 
 # -- 전결합 은닉층 --
