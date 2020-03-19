@@ -5,8 +5,8 @@ class ConvLayer :
     def __init__(self, x_ch, x_h, x_w, n_flt, flt_h, flt_w, stride=1, pad=1) :
         self.params = (x_ch, x_h, x_w, n_flt, flt_h, flt_w, stride, pad)
         #가중치, 바이어스 초기값
-        self.w =  0.5*np.random.randn(n_flt, x_ch, flt_h, flt_w)
-        self.b =  0.5*np.random.randn(1, n_flt)
+        self.w =  0.1*np.random.randn(n_flt, x_ch, flt_h, flt_w)
+        self.b =  0.1*np.random.randn(1, n_flt)
 
         self.y_ch = n_flt
         self.y_h  = (x_h - flt_h + 2*pad) // stride + 1
