@@ -5,34 +5,41 @@ import functions as fn
 from ConvLayer import ConvLayer
 from PoolingLayer import PoolingLayer
 from FCLayer import BaseLayer, MiddleLayer, OutputLayer
+from cifar10_call import cifar10_call
 from mnist_call import mnist_call
 
-
-N=20000
-eta = 0.01
-epoch = 30
-batch_size = 1024
-n_sample = 500
-# 학습데이터 호출
-input_train, input_test, correct_train, correct_test = mnist_call(N)
+"""초기값 셋팅"""
+N = 30000           # How many data Call
+eta = 0.01        # learning rate
+epoch = 50          # learning epoches
+batch_size = 500    # Use mini batch
+n_sample = 200      # Using for Error, Accuracy samples
+"""
+    If you want to use Mnist,
+    Change 'cifar10_call' to 'mnist_call'
+"""
+input_train, input_test, correct_train, correct_test = cifar10_call(N) 
 
 n_train = input_train.shape[0]
 n_test  = input_test.shape[0]
 
-"""초기값 셋팅"""
-img_h = 28
-img_w = 28
-img_ch = 1
+"""
+    If you want to use Mnist,
+    Change below variabls to 28 * 28 * 1 size
+"""
+img_h = 32
+img_w = 32
+img_ch = 3
 
 # -- 각 층의 초기화 --
 cl1 = ConvLayer(img_ch, img_h, img_w, 10, 5, 5, stride = 1, pad = 2) #앞3개:인풋 중간3개:필터
 pl1 = PoolingLayer(cl1.y_ch, cl1.y_h, cl1.y_w, pool = 2, pad = 0) # pool:풀링크기(2*2), pad:패딩 너비
-cl2 = ConvLayer(pl1.y_ch, pl1.y_h, pl1.y_w, 20, 3, 3, stride = 1, pad = 1)
+cl2 = ConvLayer(pl1.y_ch, pl1.y_h, pl1.y_w, 30, 3, 3, stride = 1, pad = 1)
 pl2 = PoolingLayer(cl2.y_ch, cl2.y_h, cl2.y_w, pool = 2, pad = 0)
 
 n_fc_in = pl2.y_ch * pl2.y_h * pl2.y_w
-ml1 = MiddleLayer(n_fc_in, 1000)
-ol1 = OutputLayer(1000, 10)
+ml1 = MiddleLayer(n_fc_in, 500)
+ol1 = OutputLayer(500, 10)
 
 
 # -- 순전파--
@@ -132,11 +139,9 @@ for i in range(epoch) :
     test_error_y.append(error_test)
     test_accu_x.append(i)
     test_accu_y.append(accu2)
-
-    # -- 경과 표시 --
-
-    print("Epoch:" + str(i) + "/" + str(epoch), "Error_train:" + str(error_train), "Error_test:" + str(error_test),
-            "Accu_train:" + str(accu), "Accu_test:" + str(accu2))
+    print("Epoch:" + str(i) + "/" + str(epoch),
+          "Error_train:" + str(error_train), "Error_test:" + str(error_test),
+          "Accu_train:" + str(accu), "Accu_test:" + str(accu2))
 
     # -- 학습 --
     index_rand = np.arange(n_train)
@@ -154,9 +159,9 @@ for i in range(epoch) :
 plt.plot(train_error_x, train_error_y, label="Train error")
 plt.plot(test_error_x, test_error_y, label="Test error")
 plt.plot(train_accu_x, train_accu_y, label="Train accu")
-plt.plot(test_accu_x, test_accu_y, label="Test acuu")
+plt.plot(test_accu_x, test_accu_y, label="Test accu")
 plt.legend()
-
+plt.ylim(0,100)
+plt.grid(b=True, which='both', axis='both')
 plt.xlabel("Epochs")
-plt.ylabel("Error")
 plt.show()
