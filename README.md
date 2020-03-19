@@ -1,5 +1,5 @@
 # CNNnumpy
-using on numpy CNN
+using only numpy CNN
 
 It is Mnist CNN model. 
 (Also trying to train Cifar10)
