@@ -1,7 +1,7 @@
 # CNNnumpy
 using only numpy CNN
 
-It is Mnist CNN model. 
+It is Mnist & Cifar10 CNN model. (default = Cifar10) 
 
 this version has 2 conv layer
 
