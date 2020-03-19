@@ -25,7 +25,7 @@ n_test  = input_test.shape[0]
 
 """
     If you want to use Mnist,
-    Change below variabls to 28 * 28 * 1 size
+    Change below variabls to 28 * 28 * 1 size. Thank you
 """
 img_h = 32
 img_w = 32
