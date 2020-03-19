@@ -2,6 +2,7 @@
 using on numpy CNN
 
 It is Mnist CNN model. 
+(Also trying to train Cifar10)
 
 this version has 2 conv layer
 First layer : 5*5, 10layers
