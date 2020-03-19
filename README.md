@@ -1,4 +1,6 @@
 # CNNnumpy
+문의사항  : won19600@kau.kr
+Questions : won19600@kau.kr
 using only numpy CNN
 
 It is Mnist & Cifar10 CNN model. (default = Cifar10) 
