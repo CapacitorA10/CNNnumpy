@@ -37,7 +37,7 @@ def mnist_call(a):
 
 
 
-    # 차원축소(28*28),batch로
+    # (B,C, (H*W))로 수정
     images_train = images_train.reshape(batch_size, -1)
     images_test = images_test.reshape(test_batch_size, -1)
     # max = 1로 수정
