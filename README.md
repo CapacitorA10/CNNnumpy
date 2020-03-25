@@ -9,6 +9,7 @@ It is Mnist & Cifar10 CNN model. (default = Cifar10)
 this version has 2 conv layer
 
 First layer : 3*3, 30layers
+
 Second layer : 3*3, 30layers
 ↓
 
