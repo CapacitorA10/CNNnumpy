@@ -12,7 +12,7 @@ import time
 start = time.time()
 """초기값 셋팅"""
 N = 35000  # How many data Call
-eta = 0.0005  # learning rate adam:0.00146 rmsprop : 0.0005 adagrad : 0.01
+eta = 0.000146  # learning rate adam:0.00146
 epoch = 50  # learning epoches
 batch_size = 32  # Use mini batch
 n_sample = 500  # Using for Error, Accuracy samples
