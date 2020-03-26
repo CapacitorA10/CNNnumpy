@@ -7,9 +7,6 @@ class BaseLayer:
     def __init__(self, n_upper, n):
         self.w = 0.1*np.random.randn(n_upper, n)
         self.b = 0.1*np.random.randn(n)
-        #adagrad & rmsprop
-        # self.h_w = np.zeros((n_upper, n)) + 1e-8
-        # self.h_b = np.zeros(n) + 1e-8
         #adam
         self.m_w = np.zeros((n_upper, n))
         self.v_w = np.zeros((n_upper, n))
@@ -18,18 +15,6 @@ class BaseLayer:
         self.t = 1
 
     def update(self, eta):
-        #adagrad
-        # self.h_w += self.grad_w * self.grad_w
-        # self.w -= eta / np.sqrt(self.h_w) * self.grad_w
-        #
-        # self.h_b += self.grad_b * self.grad_b
-        # self.b -= eta / np.sqrt(self.h_b) * self.grad_b
-        #rmsprop
-        # self.h_w = (0.9 * self.h_w) + (0.1 * (self.grad_w * self.grad_w))
-        # self.w -= eta / np.sqrt(self.h_w) * self.grad_w
-        #
-        # self.h_b = (0.9 * self.h_b) + (0.1 * (self.grad_b * self.grad_b))
-        # self.b -= eta / np.sqrt(self.h_b) * self.grad_b
         #adam
         self.m_w = (0.9 * self.m_w) + (0.1 * self.grad_w)
         self.v_w = (0.999 * self.v_w) + (0.001 * (self.grad_w * self.grad_w))

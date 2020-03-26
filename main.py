@@ -12,7 +12,7 @@ import time
 start = time.time()
 """초기값 셋팅"""
 N = 35000  # How many data Call
-eta = 0.00146  # learning rate
+eta = 0.0005  # learning rate adam:0.00146 rmsprop : 0.0005 adagrad : 0.01
 epoch = 50  # learning epoches
 batch_size = 32  # Use mini batch
 n_sample = 500  # Using for Error, Accuracy samples
@@ -166,11 +166,11 @@ for i in range(epoch):
 
     # -- 오차 기록 --
     train_error_x.append(i)
-    train_error_y.append(error_train * 30)
+    train_error_y.append(error_train * 25)
     train_accu_x.append(i)
     train_accu_y.append(accu)
     test_error_x.append(i)
-    test_error_y.append(error_test * 30)
+    test_error_y.append(error_test * 25)
     test_accu_x.append(i)
     test_accu_y.append(accu2)
     print("Epoch:" + str(i) + "/" + str(epoch),
@@ -197,6 +197,7 @@ plt.plot(train_accu_x, train_accu_y, label="Train accu")
 plt.plot(test_accu_x, test_accu_y, label="Test accu")
 plt.legend()
 plt.ylim(0, 100)
+plt.xlim(0,50)
 plt.grid(b=True, which='both', axis='both')
 plt.xlabel("Epochs")
 plt.show()

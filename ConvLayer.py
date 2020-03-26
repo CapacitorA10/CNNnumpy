@@ -11,9 +11,6 @@ class ConvLayer :
         self.y_ch = n_flt
         self.y_h  = (x_h - flt_h + 2*pad) // stride + 1
         self.y_w  = (x_w - flt_w + 2*pad) // stride + 1
-        #adagrad & rmsprop
-        # self.h_w = np.zeros((n_flt, x_ch, flt_h, flt_w)) + 1e-8
-        # self.h_b = np.zeros((1, n_flt)) + 1e-8
         # adam
         self.m_w = np.zeros((n_flt, x_ch, flt_h, flt_w))
         self.v_w = np.zeros((n_flt, x_ch, flt_h, flt_w))
@@ -53,19 +50,6 @@ class ConvLayer :
         self.grad_x = fn.col2im(grad_cols.T, x_shape, flt_h, flt_w, y_h, y_w, stride, pad)
 
     def update(self, eta):
-        #adagrad
-        # self.h_w += self.grad_w * self.grad_w
-        # self.w -= eta / np.sqrt(self.h_w) * self.grad_w
-        #
-        # self.h_b += self.grad_b * self.grad_b
-        # self.b -= eta / np.sqrt(self.h_b) * self.grad_b
-        #rmsprop
-        # self.h_w = (0.9 * self.h_w) + (0.1 * (self.grad_w * self.grad_w))
-        # self.w -= eta / np.sqrt(self.h_w) * self.grad_w
-        #
-        # self.h_b =(0.9 * self.h_b) + (0.1 * (self.grad_b * self.grad_b))
-        # self.b -= eta / np.sqrt(self.h_b) * self.grad_b
-        #adam
         self.m_w = (0.9 * self.m_w) + (0.1 * self.grad_w)
         self.v_w = (0.999 * self.v_w) + (0.001 * (self.grad_w * self.grad_w))
         m = self.m_w / (1 - (0.9 ** self.t))
