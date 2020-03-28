@@ -32,3 +32,17 @@ def col2im(cols, img_shape, flt_h, flt_w, out_h, out_w, stride=1, pad=0) :
 def relu(x):
     return np.maximum(0,x)
 
+class dropout :
+    def __init__(self, ratio) :
+        self.ratio = ratio
+
+    def forward(self, x, is_train):
+        if is_train :
+            rand = np.random.rand(*x.shape)
+            self.dropout = np.where(rand > self.ratio, 1, 0)
+            self.y = x * self.dropout
+        else :
+            self.y = (1 - self.ratio) * x #없으면 overflow
+
+    def backward(self, grad):
+        self.grad_x = grad * self.dropout
