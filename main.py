@@ -12,20 +12,20 @@ import time
 start = time.time()
 """초기값 셋팅"""
 N = 35000  # How many data Call
-eta = 0.000146  # learning rate adam:0.00146
-epoch = 50  # learning epoches
+eta = 0.00146  # learning rate adam:0.00146
+epoch = 20  # learning epoches
 batch_size = 32  # Use mini batch
 n_sample = 500  # Using for Error, Accuracy samples
-alpha = 1  # how many times do you want to learn in 1 epoch. if 1, whole data learns.
+alpha = 1 # how many times do you want to learn in 1 epoch. if 1, whole data learns.
 
-input_train, input_test, correct_train, correct_test = cifar10_call(N)
+input_train, input_test, correct_train, correct_test = mnist_call(N)
 
 n_train = input_train.shape[0]
 n_test = input_test.shape[0]
 
-img_h = 32
-img_w = 32
-img_ch = 3
+img_h = 28
+img_w = 28
+img_ch = 1
 
 # -- 각 층의 초기화 --
 cl1 = ConvLayer(img_ch, img_h, img_w, 30, 3, 3, stride=1, pad=1)  # 앞3개:인풋 중간3개:필터
@@ -38,9 +38,8 @@ pl2 = PoolingLayer(cl3.y_ch, cl3.y_h, cl3.y_w, pool=2, pad=0)
 c_dr2 = fn.dropout(0.25)
 
 cl4 = ConvLayer(pl2.y_ch, pl2.y_h, pl2.y_w, 120, 3, 3, stride=1, pad=1)
-pl3 = PoolingLayer(cl4.y_ch, cl4.y_h, cl4.y_w, pool=2, pad=0)
 
-n_fc_in = pl3.y_ch * pl3.y_h * pl3.y_w
+n_fc_in = cl4.y_ch * cl4.y_h * cl4.y_w
 ml1 = MiddleLayer(n_fc_in, 500)
 dr1 = fn.dropout(0.5)
 ml2 = MiddleLayer(500, 500)
@@ -63,9 +62,8 @@ def forward_propagation(x, is_train=False):
     c_dr2.forward(pl2.y, is_train)
 
     cl4.forward(c_dr2.y)
-    pl3.forward(cl4.y)
 
-    fc_input = pl3.y.reshape(n_bt, -1)
+    fc_input = cl4.y.reshape(n_bt, -1)
     ml1.forward(fc_input)
     dr1.forward(ml1.y, is_train)
     ml2.forward(dr1.y)
@@ -83,9 +81,8 @@ def backpropagation(t):
     dr1.backward(ml2.grad_x)
     ml1.backward(dr1.grad_x)
 
-    grad_img = ml1.grad_x.reshape(n_bt, pl3.y_ch, pl3.y_h, pl3.y_w)
-    pl3.backward(grad_img)
-    cl4.backward(pl3.grad_x)
+    grad_img = ml1.grad_x.reshape(n_bt, cl4.y_ch, cl4.y_h, cl4.y_w)
+    cl4.backward(grad_img)
 
     c_dr2.backward(cl4.grad_x)
     pl2.backward(c_dr2.grad_x)
@@ -197,7 +194,6 @@ plt.plot(train_accu_x, train_accu_y, label="Train accu")
 plt.plot(test_accu_x, test_accu_y, label="Test accu")
 plt.legend()
 plt.ylim(0, 100)
-plt.xlim(0,50)
 plt.grid(b=True, which='both', axis='both')
 plt.xlabel("Epochs")
 plt.show()
